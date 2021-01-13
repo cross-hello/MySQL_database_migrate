@@ -25,7 +25,7 @@ def goes(dn):
 
 	replace_0=a.split('=')[0]+'='+dn+'/mysql'
 	con=con.replace(a,replace_0)
-	i,a=search('/etc/mysql/mysql.conf.d/mysqld.cnf', 'log_error')
+	i,a=search('/etc/mysql/mysql.conf.d/mysqld.cnf', 'log_/mysql'error')
 	replace_1=a.split('=')[0]+'='+dn+'/mysql/error.log'
 	con=con.replace(a,replace_1)
 	os.system('sudo cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf.bak') 
@@ -33,7 +33,10 @@ def goes(dn):
 	f=open('/etc/mysql/mysql.conf.d/mysqld.cnf','w', encoding='utf-8')
 	f.write(con)
 	f.close()
-	os.system('sudo rsync -va '+sn+'  '+dn)
+	if '/var/lib/mysql'==sn:
+		os.system('sudo rsync -va '+sn+'/mysql  '+dn)
+	else:
+		os.system('sudo rsync -va '+sn+'  '+dn)
 	os.system('sudo mv '+sn+' '+sn+'.bak')
 
 	f=open('/etc/apparmor.d/tunables/alias','r',encoding='utf-8')
